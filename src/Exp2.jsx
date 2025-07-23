@@ -401,9 +401,9 @@ export default function Exp2() {
                      rotation={e.rotation}/>
         ))}
 
-        {milkPositions.map((pos, i) => (
+        {/*milkPositions.map((pos, i) => (
             <Milk key={i} ndx={i} />
-        ))}
+        ))*/}
 
         { enabled && myParamsRef.current.mode && fRef.current && fRef.current[selRef] && (
             <TransformControls
