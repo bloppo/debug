@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {DoubleSide, Matrix4, Quaternion, Vector3} from "three";
 import useAppState from "../../AppState.js";
 import {DragControls, PivotControls} from "@react-three/drei";

@@ -1,3 +1,4 @@
+import React from 'react';
 
 import {DoubleSide, RepeatWrapping, TextureLoader, SRGBColorSpace, Box3} from "three";
 import {useLoader} from "@react-three/fiber";

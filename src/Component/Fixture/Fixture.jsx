@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 import {useEffect, useRef, useState} from "react";
 import VerticalSide from "./VerticalSide.jsx";
 import BackSide from "./BackSide.jsx";

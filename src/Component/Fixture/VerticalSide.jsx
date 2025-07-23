@@ -1,3 +1,4 @@
+import React from 'react';
 
 const VerticalSide = ({dimensions,x,color,thisRef,clicked}) => {
 

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {StrictMode, useRef, useState} from "react";
 import {Canvas} from "@react-three/fiber";
 

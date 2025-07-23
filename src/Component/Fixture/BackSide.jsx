@@ -1,3 +1,4 @@
+import React from 'react';
 
 const BackSide = ({dimensions,color,thisRef,clicked}) => {
 

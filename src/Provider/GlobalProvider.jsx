@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {createContext, useContext, useRef, useState} from 'react'
 
 const GlobalContext = createContext(null)

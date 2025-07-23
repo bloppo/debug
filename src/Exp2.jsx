@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {Box3, Vector3, DoubleSide, CameraHelper} from 'three'
 
 import {CameraControls, OrbitControls, PerspectiveCamera, useHelper} from '@react-three/drei'

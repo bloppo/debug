@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {Theme} from "@radix-ui/themes";
 import {GlobalProvider} from "./Provider/GlobalProvider.jsx";
 import {LilGuiProvider} from "./Provider/LilGuiProvider.jsx";

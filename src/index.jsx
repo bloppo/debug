@@ -1,3 +1,5 @@
+import React from 'react';
+
 import './style.css'
 import "@radix-ui/themes/styles.css";
 import ReactDOM from 'react-dom/client'
