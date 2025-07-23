@@ -36,9 +36,9 @@ const MyDialog = () => {
         color:'white',
         padding:3,
         margin:0,
-        }}>Howdy!</Dialog.Title>
+        }}>Test Dialog</Dialog.Title>
     <Dialog.Description size="2" mb="4">
-        Make changes to your profile. {count}
+        Test HTML {count}
     </Dialog.Description>
     <Dialog.Close asChild>
         <Button onClick={inc} style={{padding:'5px', margin:'5px', border:'2px solid red'}}>Close</Button>
