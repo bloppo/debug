@@ -2,7 +2,7 @@ import React from 'react';
 
 import {Box3, Vector3, DoubleSide, CameraHelper} from 'three'
 
-import {CameraControls, OrbitControls, PerspectiveCamera, useHelper} from '@react-three/drei'
+import {CameraControls, Html, OrbitControls, PerspectiveCamera, useHelper} from '@react-three/drei'
 
 import { Perf } from 'r3f-perf'
 
@@ -112,6 +112,7 @@ export default function Exp2() {
     const ug = useGlobal();
 
     const storeDimensions = useAppState((state)    => state.storeDimensions);
+    const updateFixturePosition = useAppState((state) => state.updateFixturePosition);
 
     const enabledRef = useRef(enabled);
 
@@ -235,6 +236,20 @@ export default function Exp2() {
         }
     }
 
+    const onDragChange = (e) => {
+
+        const worldPosition = new Vector3();
+
+        console.log(e.value)
+
+        if(!e.value) {
+            const pos = transformRef.current.object.position
+            console.log([pos.x,pos.y,pos.z])
+            updateFixturePosition(selNdx,[pos.x,pos.y,pos.z])
+            //console.log(selNdx,transformRef.current.object)
+        }
+    }
+
     useEffect(() => {
 
         enabledRef.current = enabled;
@@ -243,13 +258,29 @@ export default function Exp2() {
 
     useEffect(() => {
 
+        const controls = transformRef.current;
+
+        if(!controls) return;
+
+        controls.addEventListener('dragging-changed', onDragChange);
+
+        return () => {
+
+        controls.removeEventListener('dragging-changed', onDragChange);
+
+    }
+
+    },[transformRef.current, enabled]);
+
+    useEffect(() => {
+
         document.addEventListener('keydown', handler);
 
         return () => {
             document.removeEventListener('keydown', handler)
-    }
+        }
 
-    },[])
+    },[]);
 
     const addCameraToGui = (cam) => {
 
@@ -317,6 +348,8 @@ export default function Exp2() {
 
     useEffect(() => {
 
+            if(!hasHydrated) return;
+
             gui.close()
 
             const tcontrols = gui.addFolder("Transform Controls")
@@ -350,6 +383,14 @@ export default function Exp2() {
 
 //    const milk = useAppState(state => state.milk);
     const milkPositions = useAppState(state => state.milk.position);
+
+    const hasHydrated = useAppState(state => state._isHydrated);
+
+    if(!hasHydrated) {
+        return <><Html><div>Loading ...</div></Html></>; // Wait for hydration
+    }
+
+    const fixtures = useAppState(state => state.fixtures);
 
     return <>
 
@@ -390,7 +431,7 @@ export default function Exp2() {
 
         <Store clicked={storeClicked}/>
 
-        {builder[0].fixtures.map((e,i) => (
+        {fixtures.map((e,i) => (
             <Fixture key={i}
                      ndx={i}
                      ref={(e1) => (fRef.current[i] = e1)}

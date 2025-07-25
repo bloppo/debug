@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {memo, useEffect, useSyncExternalStore} from 'react';
 
 import {useState} from "react";
 import {useGlobal} from "../../Provider/GlobalProvider.jsx";
 import useAppState from "../../AppState.js";
 
+import Milk from "../Product/Milk.jsx";
+
 const Shelf = ({
                    dimensions,
-                   index,
-                   fixtureIndex,
+                   shelfNdx,
+                   fixtureNdx,
                    shelf,
                    deg,
                    color,
@@ -16,7 +18,7 @@ const Shelf = ({
 
     const [aColor, setAColor] = useState(color)
 
-    const toRad = 0; Math.PI / 180
+    const toRad = 0; //Math.PI / 180
 
     const shelfWidth =  dimensions.width - dimensions.thickness
 
@@ -27,15 +29,29 @@ const Shelf = ({
 
     const highlite =  true; //ug.movingObj
 
-    const fixtureNdx = useAppState((state) => state.selectShelf.fixtureNdx);
-    const shelfNdx = useAppState((state) => state.selectShelf.shelfNdx);
-    const updateSelectedShelf = useAppState((state) => state.selectShelf.updateSelectedShelf);
-    const updateShelfPosition  = useAppState((state) => state.selectShelf.updateShelfPosition);
+    //const fixtureNdx = useAppState((state) => state.selectShelf.fixtureNdx);
+    //const shelfNdx = useAppState((state) => state.selectShelf.shelfNdx);
+    const updateSelectedShelf = useAppState((state) => state.updateSelectedShelf);
+    const updateShelfPosition  = useAppState((state) => state.updateShelfPosition);
+
+    const selectedProduct = useAppState((state) => state.selectedProduct);
+    const selectedTarget = useAppState((state) => state.selectedTarget);
+
+    const selectProduct = useAppState((state) => state.selectProduct);
+    const selectTarget = useAppState((state) => state.selectTarget);
+
+    const moveProduct = useAppState((state) => state.moveProduct);
+    const arrangeProducts = useAppState((state) => state.arrangeProducts);
+
+    const clearSelectedProduct = useAppState((state) =>state.clearSelectedProduct);
+    const clearSelectedTarget = useAppState((state) => state.clearSelectedTarget);
+
+    const setProductOutline = useAppState((state) => state.setProductOutline);
 
     const handleMouseOver = (e) => {
         setAColor("#000000")
         e.stopPropagation()
-        updateSelectedShelf(fixtureIndex, index)
+        updateSelectedShelf(fixtureNdx, shelfNdx)
         updateShelfPosition(thisRef.current.position)
     }
 
@@ -46,22 +62,57 @@ const Shelf = ({
         updateShelfPosition(null)
     }
 
+
+    const moveProductToShelf = (e) => {
+        if(e.button === 0 && selectedProduct !== null) {
+            console.log(fp)
+            clicked(e, {name: "Shelf", fixture: fixtureNdx, shelf: shelfNdx});
+            setProductOutline(false)
+            selectTarget({fixtureNdx, shelfNdx})
+            moveProduct()
+            arrangeProducts(selectedProduct.fixtureNdx,selectedProduct.shelfNdx,shelfWidth)
+            clearSelectedProduct()
+            arrangeProducts(fixtureNdx,shelfNdx,shelfWidth)
+            console.log(selectedProduct)
+        }
+    }
+
+    const productsOnShelf = useAppState(state => state.productsOnShelf);
+
+    const fp = productsOnShelf(fixtureNdx,shelfNdx);
+
+    //console.log(fixtureNdx, shelfNdx, fp)
+
     return (
 
-        <mesh ref={thisRef}
-                castShadow={true}
-                receiveShadow={true}
-              position={[shelfX, shelfY - shelf*dimensions.thickness , 0]}
-              rotation-x={toRad * deg}
-              onPointerOver = {(e) => {highlite && handleMouseOver(e);}}
-              onPointerDown = {(e) => {clicked(e,{name:"Shelf",fixture:fixtureIndex,shelf:index}); e.stopPropagation()}}
-              onPointerOut = {(e) => {highlite && handleMouseOut(e);}}
+        <group ref={thisRef}
+            castShadow={true}
+            receiveShadow={true}
+            position={[shelfX, shelfY - shelf*dimensions.thickness , 0]}
+            onPointerOver = {(e) => {highlite && handleMouseOver(e);}}
+            onPointerDown = {(e) => {moveProductToShelf(e); e.stopPropagation()}}
+            onPointerOut = {(e) => {highlite && handleMouseOut(e);}}
         >
-            <boxGeometry args={[shelfWidth, dimensions.thickness, dimensions.depth]}/>
-            <meshStandardMaterial color={aColor}/>
-        </mesh>
+            <mesh>
+                <boxGeometry args={[shelfWidth, dimensions.thickness, dimensions.depth]}/>
+                <meshStandardMaterial color={aColor}/>
+            </mesh>
 
+            {fp && fp.map((item, ndx) => (
+                <Milk key={ndx}
+                      ndx={item.ndx}
+                      isOutline={item.isOutline}
+                      position={item.position}
+                      color={item.color}
+                      size={item.size}
+                      type={item.type}
+                      fixtureNdx={item.fixtureNdx}
+                      shelfNdx={item.shelfNdx}
+                />
+            ))}
+
+        </group>
     )
 }
 
-export default Shelf;
+export default memo(Shelf);

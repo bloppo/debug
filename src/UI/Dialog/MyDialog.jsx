@@ -20,7 +20,7 @@ const MyDialog = () => {
 
     const id = 'dialogContent'
 
-    const params = {test: () => {console.log('test');setOpen(true)}}
+    const params = {test: () => {console.log('test');setOpen(true);gui.close()}}
 
     useEffect(() => {
 

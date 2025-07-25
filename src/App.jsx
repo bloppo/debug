@@ -28,15 +28,15 @@ const App = () =>  {
     const [open, setOpen] = useState(false);
 
     const initialMenuItems = [
-        { label: 'Add Item', action: () => alert('one') },
-        { label: 'Add Item', action: () => alert('one') },
+        { label: 'Help', action: () => alert('Help') },
+        { label: 'Add Fixture', action: () => addAFixture() },
     ]
 
     const contextMenu = useAppState((state) => state.contextMenu);
 
     const menuTitle = contextMenu.title;
-    const setMenuTitle = contextMenu.setTitle //useAppState((state) => state.setTitle);
-    const setNewMenuItems =  contextMenu.setMenuItems //useAppState((state) => state.setMenuItems);
+    const setMenuTitle = useAppState((state) => state.setTitle);
+    const setNewMenuItems =  useAppState((state) => state.setMenuItems);
 
     const tempItems = useAppState((state) => state.contextMenu.menuItems)
 
@@ -65,6 +65,18 @@ const App = () =>  {
 
         }
 
+    }
+
+    const addFixture = useAppState((state) => state.addFixture);
+
+    const addAFixture = () => {
+        const fixture = {
+            height: 3,
+            width: 2,
+            position: [0,1.5,0],
+            rotation: [0,0,0]
+        }
+        addFixture(fixture)
     }
 
     const handleOpenChange = (isOpen) => {
