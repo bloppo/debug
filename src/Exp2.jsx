@@ -385,11 +385,11 @@ export default function Exp2() {
     const milkPositions = useAppState(state => state.milk.position);
 
     const hasHydrated = useAppState(state => state._isHydrated);
-
+/*
     if(!hasHydrated) {
         return <><Html><div>Loading ...</div></Html></>; // Wait for hydration
     }
-
+*/
     const fixtures = useAppState(state => state.fixtures);
 
     return <>
