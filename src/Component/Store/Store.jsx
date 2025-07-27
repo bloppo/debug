@@ -70,7 +70,13 @@ return (
             rotation-x={ - Math.PI /2 }
             onPointerDown={(e) => {props.clicked(e,{name:"floor"});}}>
             <planeGeometry args={[floor.width,floor.height]}/>
-            <meshStandardMaterial color="#cccccc" side={DoubleSide} map={texture}/>
+            <meshStandardMaterial
+                color="#eee"
+                side={DoubleSide}
+                roughness={0.8}
+                metalness={0.4}
+                map={texture}
+                />
         </mesh>
 
         <mesh

@@ -43,6 +43,9 @@ const Shelf = ({
     const moveProduct = useAppState((state) => state.moveProduct);
     const arrangeProducts = useAppState((state) => state.arrangeProducts);
 
+    const removeProduct = useAppState((state) => state.removeProduct);
+    const addProduct = useAppState((state) => state.addProduct);
+
     const clearSelectedProduct = useAppState((state) =>state.clearSelectedProduct);
     const clearSelectedTarget = useAppState((state) => state.clearSelectedTarget);
 

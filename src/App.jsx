@@ -3,11 +3,10 @@ import React from 'react';
 import {StrictMode, useRef, useState} from "react";
 import {Canvas} from "@react-three/fiber";
 
-import './UI/ddstyle.css'
-
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import {Loader} from "@react-three/drei";
 
 import MyDialog from "./UI/Dialog/MyDialog.jsx";
+import MyDropdownMenu from "./UI/ContextMenu/MyDropdownMenu.jsx";
 
 import Exp2 from "./Exp2.jsx";
 
@@ -15,13 +14,30 @@ import AppProviders from "./AppProviders.jsx";
 
 import useAppState from "./AppState.js";
 
-const DropdownMenuRoot = DropdownMenu.Root
-const DropdownMenuTrigger = DropdownMenu.Trigger
-const DropdownMenuContent = DropdownMenu.Content
-const DropdownMenuItem = DropdownMenu.Item
 
-//className="DropdownMenu.Separator"
-// style={{ zIndex: 2000, backgroundColor: '#ffffff', padding: '10px', borderRadius: '5px' }}
+/*
+                <DropdownMenuRoot open={open} onOpenChange={handleOpenChange}>
+                    <DropdownMenuTrigger asChild>
+                        <button ref={ddmRef}
+                            style={{ position: "absolute",
+                                display:'none',
+                                marginBottom:50,
+                                top: 20,
+                                left: 20,
+                                zIndex: 1100 }}
+                        >
+                            {menuTitle}
+                        </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="DropdownMenuContent">
+                        {menuItems.map((item, index) => (
+                        <DropdownMenuItem className="DropdownMenuItem" key={index} onSelect={item.action}>
+                                {item.label}
+                            </DropdownMenuItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenuRoot>
+ */
 
 const App = () =>  {
 
@@ -90,32 +106,19 @@ const App = () =>  {
         <AppProviders>
             <div style={{
                 position:'relative',
+                backgroundColor: '#000000',
                 width: "100vw",
                 height: "100vh",
                 margin: 0,
                 padding: 0,
                 overflow: "hidden" }}>
-                <DropdownMenuRoot open={open} onOpenChange={handleOpenChange}>
-                    <DropdownMenuTrigger asChild>
-                        <button ref={ddmRef}
-                            style={{ position: "absolute",
-                                display:'none',
-                                marginBottom:50,
-                                top: 20,
-                                left: 20,
-                                zIndex: 1100 }}
-                        >
-                            {menuTitle}
-                        </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="DropdownMenuContent">
-                        {menuItems.map((item, index) => (
-                        <DropdownMenuItem className="DropdownMenuItem" key={index} onSelect={item.action}>
-                                {item.label}
-                            </DropdownMenuItem>
-                        ))}
-                    </DropdownMenuContent>
-                </DropdownMenuRoot>
+
+                <MyDropdownMenu ddmRef={ddmRef}
+                                open={open}
+                                handleOpenChange={handleOpenChange}
+                                menuTitle={menuTitle}
+                                menuItems={menuItems}/>
+
                 <Canvas shadows={true} style={{
                     position:'absolute',
                     top:0,
@@ -127,6 +130,7 @@ const App = () =>  {
                     <Exp2/>
                 </Canvas>
             </div>
+            <Loader />
             <MyDialog />
         </AppProviders>
 </StrictMode>
